@@ -1,0 +1,14 @@
+# ninja log v5
+9	505	1664135100946820869	CMakeFiles/fennec.dir/interpreter.cpp.o	3173717dd830f2cf
+3	1019	1664135566099866574	CMakeFiles/fennec.dir/instruction.cpp.o	c2435306e564a82
+4	965	1664135566043763803	CMakeFiles/fennec.dir/conditional.cpp.o	d2eeca7749feeb3a
+3	1046	1664140914240832562	CMakeFiles/fennec.dir/main.cpp.o	321a25688e69307d
+708	784	1664141359827530286	fennec	d413a2500124d65b
+6	1069	1664140914266735520	CMakeFiles/fennec.dir/Lexer.cpp.o	cdafeb815a0b336f
+3	708	1664141359747557563	CMakeFiles/fennec.dir/Parser.cpp.o	c17ff96e9b408217
+25	1323	1664226329921275178	CMakeFiles/fennec.dir/literal.cpp.o	24b3125414a53c7c
+26	1324	1664226329920674144	CMakeFiles/fennec.dir/register.cpp.o	5cee73db9045d925
+23	1337	1664226329934764078	CMakeFiles/fennec.dir/main.cpp.o	321a25688e69307d
+25	1363	1664226329961954519	CMakeFiles/fennec.dir/Parser.cpp.o	c17ff96e9b408217
+25	1375	1664226329973662091	CMakeFiles/fennec.dir/Lexer.cpp.o	cdafeb815a0b336f
+1375	1552	1664226330156614926	fennec	f1f0725c70ec0fcb
