@@ -1,14 +1,14 @@
 #include <iostream>
 #include <string>
 
-#include "instruction.h"
-#include "Lexer.h"
-#include "Parser.h"
+#include "includes/instruction.h"
+#include "includes/Lexer.h"
+#include "includes/Parser.h"
 
 int main() {
     uint64_t raw_add = 0x4000000000000000;
     fennec::Instruction add_instruction(raw_add);
-    if (add_instruction.get_opcode() == fennec::OpCode::Add)
+    if (add_instruction.get_opcode() == fennec::OpCode::OpCode_Add)
     {
         std::cout << "Correct Instruction" << std::endl;
     }
@@ -23,7 +23,7 @@ int main() {
     fennec::FASMNode *add_ast = fasm_parser.to_ast(lexeme_array);
 
     fennec::Instruction instruction = fasm_parser.to_instruction(add_ast);
-    if (instruction.get_opcode() == fennec::OpCode::Add)
+    if (instruction.get_opcode() == fennec::OpCode::OpCode_Add)
     {
         std::cout << "Parsed Correct Instruction" << std::endl;
     }

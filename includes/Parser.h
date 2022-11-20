@@ -61,29 +61,41 @@ namespace fennec
         uint64_t get_number() const;
     };
 
-    class TypeTable
+    class FASMTypeTable
     {
     private:
-        std::map<uint64_t, fennec::LexemeType> link;
+        std::map<uint64_t, fennec::LexemeType> table;
     public:
-        TypeTable();
+        FASMTypeTable() = default;
+
+        bool is_type_enforced(uint64_t address);
+        void assign_type(uint64_t address, fennec::LexemeType type);
+        void override_type(uint64_t address, fennec::LexemeType type);
     };
 
     class FASMNode
     {
     private:
         fennec::Lexeme lexeme;
+        FASMNode* parent;
         std::vector<FASMNode*> children;
+        fennec::FASMTypeTable *shared_type_table;
     public:
         FASMNode() = default;
+        explicit FASMNode(fennec::Lexeme lexeme, FASMNode* parent);
         explicit FASMNode(fennec::Lexeme lexeme);
         ~FASMNode();
+
+        bool is_root() const;
 
         const fennec::Lexeme &get_lexeme();
         void set_lexeme(fennec::Lexeme new_lexeme);
 
         const std::vector<fennec::FASMNode*> &get_children();
         void add_child(fennec::FASMNode* node);
+
+        FASMTypeTable& get_type_table();
+        void link_type_table(fennec::FASMTypeTable *type_table);
     };
 
     class FASMParser

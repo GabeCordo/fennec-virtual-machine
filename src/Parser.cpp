@@ -2,43 +2,18 @@
 // Created by Gabe Cordovado on 2022-09-25.
 //
 
-#include "Parser.h"
-
-fennec::FASMNode::FASMNode(fennec::Lexeme lexeme) : lexeme(lexeme)
-{}
-
-const fennec::Lexeme &fennec::FASMNode::get_lexeme()
-{
-    return lexeme;
-}
-
-const std::vector<fennec::FASMNode*> &fennec::FASMNode::get_children()
-{
-    return children;
-}
-
-void fennec::FASMNode::add_child(fennec::FASMNode *node)
-{
-    children.push_back(node);
-}
-
-fennec::FASMNode::~FASMNode() {
-    // iterate over each child and invoke the delete function
-    for (auto itr = children.begin(); itr != children.end(); ++itr)
-    {
-        delete *itr;
-    }
-}
-
-void fennec::FASMNode::set_lexeme(fennec::Lexeme new_lexeme)
-{
-    lexeme = new_lexeme;
-}
-
+#include "../includes/Parser.h"
 
 fennec::FASMNode* fennec::FASMParser::to_ast(std::vector<fennec::Lexeme> *lexeme_array)
 {
     fennec::FASMNode *fasm_ast_root = new fennec::FASMNode;
+    assert(fasm_ast_root != nullptr); // system ran out of memory
+
+    fennec::FASMTypeTable *fasm_type_table = new fennec::FASMTypeTable;
+    assert(fasm_type_table != nullptr); // system ran out of memory
+
+    // the type table associates addresses to a specific type for dependant instructions
+    fasm_ast_root->link_type_table(fasm_type_table);
 
     std::vector<fennec::Lexeme>::iterator lexeme_array_itr = lexeme_array->begin();
 
@@ -74,7 +49,7 @@ bool fennec::FASMParser::numerical_type(std::vector<fennec::Lexeme>::iterator it
     {
         if (reserved_numerical_keywords[i] == (*itr).value)
         {
-            fennec::FASMNode *node = new fennec::FASMNode(*itr);
+            fennec::FASMNode *node = new fennec::FASMNode(*itr, ast_node);
             ast_node->add_child(node);
             return true;
         }
@@ -89,7 +64,9 @@ bool fennec::FASMParser::is_register(std::vector<fennec::Lexeme>::iterator itr, 
         return false;
     }
 
-    fennec::FASMNode *node = new fennec::FASMNode(*itr);
+    fennec::FASMNode *node = new fennec::FASMNode(*itr, ast_node);
+    assert(node != nullptr); // memory ran out
+
     ast_node->add_child(node);
     return true;
 }
@@ -101,7 +78,9 @@ bool fennec::FASMParser::is_literal(std::vector<fennec::Lexeme>::iterator itr, f
         return false;
     }
 
-    fennec::FASMNode *node = new fennec::FASMNode(*itr);
+    fennec::FASMNode *node = new fennec::FASMNode(*itr, ast_node);
+    assert(node != nullptr); // memory ran out
+
     ast_node->add_child(node);
     return true;
 }
@@ -109,6 +88,24 @@ bool fennec::FASMParser::is_literal(std::vector<fennec::Lexeme>::iterator itr, f
 bool fennec::FASMParser::instruction_move(std::vector<fennec::Lexeme>::iterator itr, fennec::FASMNode *ast_node)
 {
     if ((*itr).type != fennec::LexemeType::Instruction_Move)
+    {
+        return false;
+    }
+    itr++;
+
+    if ((*itr).type != fennec::LexemeType::Type_Bracket_Start)
+    {
+        return false;
+    }
+    itr++;
+
+    if ((*itr).summary_type != fennec::LexemeSummaryType::Summary_Type)
+    {
+        return false;
+    }
+    itr++;
+
+    if ((*itr).type != fennec::LexemeType::Type_Bracket_End)
     {
         return false;
     }
@@ -207,12 +204,12 @@ fennec::Instruction fennec::FASMParser::to_instruction(fennec::FASMNode *ast_roo
 {
     fennec::Instruction instruction;
 
-    unsigned long int opcode_hex = 0x0;
     switch (ast_root->get_lexeme().type)
     {
-        case fennec::LexemeType::Instruction_Move:  opcode_hex = 0x1; break;
-        case fennec::LexemeType::Instruction_Add: opcode_hex = 0x2; break;
-        case fennec::LexemeType::Instruction_Subtract: opcode_hex = 0x3; break;
+        case fennec::LexemeType::Instruction_Interrupt:     instruction.set_opcode(0x0); break;
+        case fennec::LexemeType::Instruction_Move:          instruction.set_opcode(0x1); break;
+        case fennec::LexemeType::Instruction_Add:           instruction.set_opcode(0x2); break;
+        case fennec::LexemeType::Instruction_Subtract:      instruction.set_opcode(0x3); break;
     }
 
     auto ast_children = ast_root->get_children();
@@ -284,7 +281,7 @@ fennec::Instruction fennec::FASMParser::to_instruction(fennec::FASMNode *ast_roo
         // Source 2
         auto src2_address_lexeme = (*ast_itr)->get_lexeme();
 
-        if (src2_address_lexeme.summary_type == fennec::LexemeSummaryType::Summary_Literal)
+        if (src2_address_lexeme.summary_type == fennec::LexemeSummaryType::Summary_Register)
         {
             // Source 2 is a register
             fennec::Register src2_register(src2_address_lexeme);

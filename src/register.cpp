@@ -2,7 +2,7 @@
 // Created by Gabe Cordovado on 2022-09-26.
 //
 
-#include "Parser.h"
+#include "../includes/Parser.h"
 
 fennec::Register::Register(fennec::Lexeme &lexeme)
 {

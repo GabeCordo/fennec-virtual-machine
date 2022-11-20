@@ -2,7 +2,7 @@
 // Created by Gabe Cordovado on 2022-09-24.
 //
 
-#include "instruction.h"
+#include "../includes/instruction.h"
 
 uint64_t fennec::to_int(fennec::OpCode opcode)
 {
@@ -27,6 +27,9 @@ uint64_t fennec::to_int(fennec::DI di)
         return 0;
     }
 }
+
+fennec::Instruction::Instruction() : raw_bytes(0x0)
+{}
 
 fennec::Instruction::Instruction(const fennec::Instruction &other)
 {
@@ -66,15 +69,19 @@ fennec::OpCode fennec::Instruction::get_opcode() const
     uint64_t raw_opcode = raw_bytes && FIRST_SIX_BITS;
     if (raw_opcode == 0x00)
     {
-        return fennec::OpCode::Interrupt;
+        return fennec::OpCode::OpCode_Interrupt;
     }
     else if (raw_opcode == 0x01)
     {
-        return fennec::OpCode::Add;
+        return fennec::OpCode::OpCode_Move;
     }
     else if (raw_opcode == 0x02)
     {
-        return fennec::OpCode::Subtract;
+        return fennec::OpCode::OpCode_Add;
+    }
+    else
+    {
+        return fennec::OpCode::OpCode_Subtract;
     }
 }
 

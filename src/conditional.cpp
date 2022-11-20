@@ -2,7 +2,7 @@
 // Created by Gabe Cordovado on 2022-09-25.
 //
 
-#include "instruction.h"
+#include "../includes/instruction.h"
 
 fennec::Condition::Condition() : raw_bytes(0x0)
 {}

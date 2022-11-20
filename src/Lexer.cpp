@@ -2,7 +2,7 @@
 // Created by Gabe Cordovado on 2022-09-25.
 //
 
-#include "Lexer.h"
+#include "../includes/Lexer.h"
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -22,7 +22,21 @@ std::vector<fennec::Lexeme> *fennec::Lexer::to_lexeme_array(std::string input_st
                 Lexeme l;
                 l.type = LexemeType::Indirect_Indicator;
                 l.value = "*";
-            } else {
+                lexeme_array->push_back(l);
+            }
+            else if (*itr == '<') {
+                Lexeme l;
+                l.type = LexemeType::Type_Bracket_Start;
+                l.value = "<";
+                lexeme_array->push_back(l);
+            }
+            else if (*itr == '>') {
+                Lexeme l;
+                l.type = LexemeType::Type_Bracket_End;
+                l.value = ">";
+                lexeme_array->push_back(l);
+            }
+            else {
                 buffer.push_back(*itr);
             }
             continue;

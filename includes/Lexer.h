@@ -26,6 +26,7 @@ namespace fennec
         Literal_Hex, Literal_Float, Literal_Decimal,
         Indirect_Indicator,
         Instruction_Add, Instruction_Subtract, Instruction_Interrupt, Instruction_Move,
+        Type_Bracket_Start, Type_Bracket_End,
         Type_UInt64, Type_UInt32, Type_UInt16, Type_UInt8, Type_Int32, Type_Int16, Type_Int8,
         Type_Float64, Type_Float32,
     };
@@ -35,7 +36,10 @@ namespace fennec
             "Register_Base_Pointer", "Register_Stack_Pointer", "Register_Index_Pointer",
             "Literal_Hex", "Literal_Float", "Literal_Decimal",
             "Indirect_Indicator",
-            "Add", "Subtract", "Interrupt", "Move"
+            "Instruction_Add", "Instruction_Subtract", "Instruction_Interrupt", "Instruction_Move",
+            "Type_Bracket_Start", "Type_Bracket_End",
+            "Type_UInt64", "Type_UInt32","Type_UInt16", "Type_UInt8", "Type_UInt64", "Type_Int32","Type_Int16", "Type_Int8",
+            "Type_Float64", "Type_Float32"
     };
 
     const uint64_t num_of_registers = 8;

@@ -1,3 +1,0 @@
-/Users/gabecordovado/CLionProjects/fennec/cmake-build-debug/CMakeFiles/fennec.dir
-/Users/gabecordovado/CLionProjects/fennec/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/gabecordovado/CLionProjects/fennec/cmake-build-debug/CMakeFiles/rebuild_cache.dir

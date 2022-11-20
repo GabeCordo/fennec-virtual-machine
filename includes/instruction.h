@@ -17,9 +17,10 @@ namespace fennec {
 
     enum OpCode
     {
-        Add,
-        Subtract,
-        Interrupt
+        OpCode_Interrupt,
+        OpCode_Move,
+        OpCode_Add,
+        OpCode_Subtract,
     };
 
     uint64_t to_int(fennec::OpCode opcode);
@@ -86,7 +87,7 @@ namespace fennec {
 
         uint64_t swap_bits(uint64_t start_pos, uint64_t end_pos, uint64_t data) const;
     public:
-        Instruction() = default;
+        Instruction();
         explicit Instruction(uint64_t raw);
         Instruction(const Instruction &other);
 
